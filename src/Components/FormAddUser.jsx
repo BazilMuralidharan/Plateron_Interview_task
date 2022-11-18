@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewUser } from "../Redux/CreateUserReducer/CreateUserReducer";
 
-export default function FormAddUser() {
+export default function FormAddUser({ createDone }) {
   const {
     userMetaData: { data }
   } = useSelector((state) => state);
@@ -32,20 +32,26 @@ export default function FormAddUser() {
     e.preventDefault();
     // console.log(state);
 
-    // const verify = data?.find((el) => {
-    //   return (
-    //     el.name === data.name || el.email === data.email || e.city === data.city
-    //   );
-    // });
+    const empty = !state.name || !state.email || !state.city;
+    if (empty) {
+      alert("FIll the details ");
+    } else {
+      const verify = data?.find((el) => {
+        return (
+          el.name === state.name ||
+          el.email === state.email ||
+          e.city === state.city
+        );
+      });
 
-    // // if (verify) {
-    // //   alert("userEXIST");
-    // // } else {
-    //   dispatch(addNewUser(state));
-    // clear();
-    // }
-    dispatch(addNewUser(state));
-    clear();
+      if (verify) {
+        alert("userEXIST");
+      } else {
+        dispatch(addNewUser(state));
+        clear();
+        createDone(false);
+      }
+    }
   };
   return (
     <div>
